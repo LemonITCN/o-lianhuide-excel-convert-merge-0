@@ -66,6 +66,7 @@ def btn_action_generate():
 
 
 def generate_output_file():
+    global generate_path
     # 创建新的Excel
     excel_out_book = xlwt.Workbook(encoding="utf-8")
     excel_out_sheet = excel_out_book.add_sheet('Sheet1')
@@ -124,6 +125,8 @@ def generate_output_file():
                 excel_out_sheet.write(row_index, 11, (excel_1_data[row_id][3].value / float(excel_2_row[9].value[1:])),
                                       style_percent)
         row_index = row_index + 1
+    if not generate_path.endswith(".xls"):
+        generate_path = generate_path + ".xls"
     excel_out_book.save(generate_path)
 
 
