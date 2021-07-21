@@ -93,36 +93,51 @@ def generate_output_file():
     excel_out_sheet.write(0, 10, '售出')
     excel_out_sheet.write(0, 11, '广告投入率')
     row_index = 0
+    data_row_index = 1
+    empty_row_index = 1
+    for excel_2_row in excel_2_sheet.get_rows():
+        row_id = str(excel_2_row[0].value)
+        if row_id in excel_1_data:
+            empty_row_index = empty_row_index + 1
     style_percent = easyxf(num_format_str='0.00%')
     for excel_2_row in excel_2_sheet.get_rows():
         if row_index > 0:
             row_id = str(excel_2_row[0].value)
+            this_row = 0
+            if row_id in excel_1_data:
+                # 有数据，添加到顶部
+                this_row = data_row_index
+                data_row_index = data_row_index + 1
+            else:
+                # 没数据，从下面添加
+                this_row = empty_row_index
+                empty_row_index = empty_row_index + 1
             # A列是从表2AB列
-            excel_out_sheet.write(row_index, 0, excel_2_row[27].value)
+            excel_out_sheet.write(this_row, 0, excel_2_row[27].value)
             # B列是从表1A列
-            excel_out_sheet.write(row_index, 1, excel_2_row[0].value)
+            excel_out_sheet.write(this_row, 1, excel_2_row[0].value)
             # C列是从表2AH列
-            excel_out_sheet.write(row_index, 2, excel_2_row[33].value)
+            excel_out_sheet.write(this_row, 2, excel_2_row[33].value)
             # D列是从表2AD列
-            excel_out_sheet.write(row_index, 3, excel_2_row[29].value)
+            excel_out_sheet.write(this_row, 3, excel_2_row[29].value)
             # E列是从表2AC列
-            excel_out_sheet.write(row_index, 4, excel_2_row[28].value)
+            excel_out_sheet.write(this_row, 4, excel_2_row[28].value)
             # J列是从表2J列
-            excel_out_sheet.write(row_index, 9, excel_2_row[9].value)
+            excel_out_sheet.write(this_row, 9, excel_2_row[9].value)
             # K列是 从表2 O列
-            excel_out_sheet.write(row_index, 10, excel_2_row[15].value)
+            excel_out_sheet.write(this_row, 10, excel_2_row[15].value)
             if row_id in excel_1_data:
                 # F列是从表1B列
-                excel_out_sheet.write(row_index, 5, excel_1_data[row_id][1].value)
+                excel_out_sheet.write(this_row, 5, excel_1_data[row_id][1].value)
                 # G列是从表1C列
-                excel_out_sheet.write(row_index, 6, excel_1_data[row_id][2].value)
+                excel_out_sheet.write(this_row, 6, excel_1_data[row_id][2].value)
                 # H列是从表1D列
-                excel_out_sheet.write(row_index, 7, excel_1_data[row_id][3].value)
+                excel_out_sheet.write(this_row, 7, excel_1_data[row_id][3].value)
                 # I列是计算得出的，用表3H列 / 表3G列
-                excel_out_sheet.write(row_index, 8, (excel_1_data[row_id][3].value / excel_1_data[row_id][2].value),
+                excel_out_sheet.write(this_row, 8, (excel_1_data[row_id][3].value / excel_1_data[row_id][2].value),
                                       style_percent)
                 # L列是计算得出的，用表3H列 / 表3J列
-                excel_out_sheet.write(row_index, 11, (excel_1_data[row_id][3].value / float(excel_2_row[9].value[1:])),
+                excel_out_sheet.write(this_row, 11, (excel_1_data[row_id][3].value / float(excel_2_row[9].value[1:])),
                                       style_percent)
         row_index = row_index + 1
     if not generate_path.endswith(".xls"):
