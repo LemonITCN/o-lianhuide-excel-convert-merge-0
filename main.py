@@ -137,7 +137,8 @@ def generate_output_file():
                 excel_out_sheet.write(this_row, 8, (excel_1_data[row_id][3].value / excel_1_data[row_id][2].value),
                                       style_percent)
                 # L列是计算得出的，用表3H列 / 表3J列
-                excel_out_sheet.write(this_row, 11, (excel_1_data[row_id][3].value / float(excel_2_row[9].value[1:])),
+                excel_out_sheet.write(this_row, 11, (
+                            excel_1_data[row_id][3].value / float(excel_2_row[9].value[1:].replace(',', ''))),
                                       style_percent)
         row_index = row_index + 1
     if not generate_path.endswith(".xls"):
