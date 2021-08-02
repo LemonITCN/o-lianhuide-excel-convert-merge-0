@@ -125,7 +125,7 @@ def generate_output_file():
             # J列是从表2J列
             excel_out_sheet.write(this_row, 9, excel_2_row[9].value)
             # K列是 从表2 O列
-            excel_out_sheet.write(this_row, 10, excel_2_row[15].value)
+            excel_out_sheet.write(this_row, 10, excel_2_row[14].value)
             if row_id in excel_1_data:
                 # F列是从表1B列
                 excel_out_sheet.write(this_row, 5, excel_1_data[row_id][1].value)
