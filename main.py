@@ -102,6 +102,7 @@ def generate_output_file():
     style_percent = easyxf(num_format_str='0.00%')
     for excel_2_row in excel_2_sheet.get_rows():
         if row_index > 0:
+            print('开始处理表2', row_index, '行')
             row_id = str(excel_2_row[0].value)
             this_row = 0
             if row_id in excel_1_data:
@@ -137,9 +138,17 @@ def generate_output_file():
                 excel_out_sheet.write(this_row, 8, (excel_1_data[row_id][3].value / excel_1_data[row_id][2].value),
                                       style_percent)
                 # L列是计算得出的，用表3H列 / 表3J列
-                excel_out_sheet.write(this_row, 11, (
-                            excel_1_data[row_id][3].value / float(excel_2_row[9].value[1:].replace(',', ''))),
-                                      style_percent)
+                try:
+                    j_content = excel_2_row[9].value
+                    if isinstance(j_content, str):
+                        j_content = j_content[1:].replace(',', '')
+                    if not isinstance(j_content, float):
+                        j_content = float(j_content)
+                    excel_out_sheet.write(this_row, 11, (
+                            excel_1_data[row_id][3].value / j_content),
+                                          style_percent)
+                except ZeroDivisionError as e:
+                    print('表格2第', row_index, '行J列为0，无法进行除法计算。error', e)
         row_index = row_index + 1
     if not generate_path.endswith(".xls"):
         generate_path = generate_path + ".xls"
