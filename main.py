@@ -135,8 +135,11 @@ def generate_output_file():
                 # H列是从表1D列
                 excel_out_sheet.write(this_row, 7, excel_1_data[row_id][3].value)
                 # I列是计算得出的，用表3H列 / 表3G列
-                excel_out_sheet.write(this_row, 8, (excel_1_data[row_id][3].value / excel_1_data[row_id][2].value),
+                try:
+                    excel_out_sheet.write(this_row, 8, (excel_1_data[row_id][3].value / excel_1_data[row_id][2].value),
                                       style_percent)
+                except ZeroDivisionError as e:
+                    print('表格1第', row_id, '行B列为0，无法进行除法计算。error', e)
                 # L列是计算得出的，用表3H列 / 表3J列
                 try:
                     j_content = excel_2_row[9].value
